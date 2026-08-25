@@ -1,17 +1,544 @@
 ---
+/**
+ * Wedding invitation for Jimena & Alan — 15 de noviembre de 2026,
+ * Cd. Victoria, Tamaulipas. A single editorial page that continues the
+ * crimson studio backdrop of their engagement shoot: hero masthead,
+ * invitation + countdown, black & white interlude, wedding-day program,
+ * hotel recommendations, and RSVP. Hotel addresses and the RSVP link are
+ * still placeholder copy.
+ */
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Countdown from '../components/Countdown.astro';
+import Marquee from '../components/Marquee.astro';
+import VenueCard from '../components/VenueCard.astro';
+import HotelCard from '../components/HotelCard.astro';
 
+import photoLaugh from '../assets/images/Jimena & Alan-50-top.jpg';
+import photoProfile from '../assets/images/Jimena & Alan-49-top.jpg';
+import photoChair from '../assets/images/Jimena & Alan-115-top.jpg';
+import photoCouch from '../assets/images/Jimena & Alan-63-top.jpg';
+import photoClose from '../assets/images/Jimena & Alan-126-top.jpg';
+
+const WEDDING = {
+	coupleNames: 'Jimena & Alan',
+	dateLabel: '15 · noviembre · 2026',
+	dateShort: '15.11.26',
+	dateIso: '2026-11-15T17:00:00-06:00',
+	rsvpDeadline: '15 de octubre de 2026',
+	location: 'Cd. Victoria, Tamaulipas',
+};
+
+/** The wedding-day program, one entry per venue: ceremony at the church, then cocktail and reception at Salón Andare. */
+const PROGRAM = [
+	{
+		venueName: 'Parroquia San Agustín',
+		address: 'Cd. Victoria, Tamaulipas',
+		mapUrl: 'https://maps.app.goo.gl/6LnSc6wMXDzoj6XdA',
+		moments: [{ moment: 'Ceremonia', time: '5:00 p. m.' }],
+	},
+	{
+		venueName: 'Salón Andare',
+		address: 'Cd. Victoria, Tamaulipas',
+		mapUrl: 'https://maps.app.goo.gl/KtnzA3yxSyGXfKiu8',
+		moments: [
+			{ moment: 'Cóctel de bienvenida', time: '6:00 p. m.' },
+			{ moment: 'Recepción', time: '7:30 p. m.' },
+		],
+	},
+];
+
+/** Placeholder hotels — swap names, addresses, and booking links. */
+const HOTELS = [
+	{
+		name: 'Gran Hotel Ejemplo',
+		address: 'Blvd. Ficticio 456, Cd. Victoria, Tamps.',
+		distance: 'A 10 minutos de la recepción',
+		note: 'Tarifa preferente con el código JIMENA&ALAN.',
+		bookingUrl: '#',
+	},
+	{
+		name: 'Casa Placeholder',
+		address: 'Calle Inventada 789, Cd. Victoria, Tamps.',
+		distance: 'A 15 minutos de la recepción',
+		note: 'Hotel boutique, ideal para quienes llegan en pareja.',
+		bookingUrl: '#',
+	},
+	{
+		name: 'Hotel Provisional Inn',
+		address: 'Av. De Muestra 1011, Cd. Victoria, Tamps.',
+		distance: 'A 5 minutos de la ceremonia',
+		note: 'La opción más práctica y cómoda para familias.',
+		bookingUrl: '#',
+	},
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Jimena & Alan — 15.11.2026">
+	<Hero coupleNames={WEDDING.coupleNames} dateLabel={WEDDING.dateLabel} />
+
+	<main>
+		<!-- Invitation + countdown -->
+		<section id="invitacion" class="invite">
+			<div class="invite-inner">
+				<p class="eyebrow invite-eyebrow" data-reveal>La invitación</p>
+				<p class="invite-statement" data-reveal>
+					Después de tantos años de risas, planes y una que otra necedad compartida, decidimos que
+					lo nuestro merece fiesta. Queremos empezar esta historia con las personas que más
+					queremos: <em>ustedes</em>.
+				</p>
+				<p class="invite-date" data-reveal aria-label="15 de noviembre de 2026">
+					{WEDDING.dateShort}
+				</p>
+				<div data-reveal>
+					<Countdown targetIso={WEDDING.dateIso} />
+				</div>
+			</div>
+		</section>
+
+		<Marquee text="Jimena & Alan — 15 de noviembre de 2026 — Cd. Victoria, Tamaulipas —" />
+
+		<!-- Black & white editorial interlude -->
+		<section class="interlude" aria-label="Fotografías de la pareja">
+			<div class="interlude-grid">
+				<figure class="interlude-figure interlude-figure--tall" data-reveal>
+					<Image
+						src={photoProfile}
+						alt="Retrato en blanco y negro de Alan y Jimena de perfil"
+						widths={[480, 768, 1080, 1600, 2200]}
+						sizes="(min-width: 768px) 44vw, 92vw"
+						quality={80}
+						loading="lazy"
+					/>
+				</figure>
+				<blockquote class="interlude-quote" data-reveal>
+					<p>«Nos reímos de los mismos chistes desde el primer día.»</p>
+				</blockquote>
+				<figure class="interlude-figure interlude-figure--offset" data-reveal>
+					<Image
+						src={photoLaugh}
+						alt="Alan y Jimena riendo juntos, en blanco y negro"
+						widths={[480, 768, 1080, 1600, 2200]}
+						sizes="(min-width: 768px) 38vw, 92vw"
+						quality={80}
+						loading="lazy"
+					/>
+				</figure>
+			</div>
+		</section>
+
+		<!-- Wedding-day program -->
+		<section id="programa" class="program">
+			<div class="program-inner">
+				<p class="eyebrow program-eyebrow" data-reveal>El gran día</p>
+				<h2 class="section-title" data-reveal>Domingo 15 de noviembre</h2>
+				<p class="program-location" data-reveal>{WEDDING.location}</p>
+				<div class="program-cards">
+					{PROGRAM.map((entry) => <VenueCard {...entry} />)}
+				</div>
+				<p class="program-dresscode" data-reveal>
+					Código de vestimenta: <em>formal</em>. El rojo es nuestro — todos los demás colores son
+					suyos.
+				</p>
+			</div>
+			<figure class="program-photo" data-reveal>
+				<Image
+					src={photoChair}
+					alt="Jimena de pie junto a Alan sentado, frente al fondo rojo"
+					widths={[768, 1280, 1920, 2560, 3840]}
+					sizes="(orientation: portrait) 230vw, 100vw"
+					quality={80}
+					loading="lazy"
+				/>
+			</figure>
+		</section>
+
+		<!-- Hotels -->
+		<section id="hoteles" class="hotels">
+			<div class="hotels-inner">
+				<div class="hotels-intro">
+					<p class="eyebrow hotels-eyebrow" data-reveal>Para quienes vienen de fuera</p>
+					<h2 class="section-title" data-reveal>Dónde hospedarte</h2>
+					<p class="hotels-lede" data-reveal>
+						Reservamos tarifas especiales en estos hoteles. Menciona la boda de Jimena y Alan al
+						reservar.
+					</p>
+					<a class="hotels-guide-link" href="/recomendaciones" data-reveal>
+						¿Vienes de fuera? Lee la guía del invitado →
+					</a>
+					<figure class="hotels-photo" data-reveal>
+						<Image
+							src={photoCouch}
+							alt="Alan y Jimena en un sillón de terciopelo verde olivo"
+							widths={[480, 768, 1080, 1600, 2200]}
+							sizes="(min-width: 900px) 38vw, 92vw"
+							quality={80}
+							loading="lazy"
+						/>
+					</figure>
+				</div>
+				<div class="hotels-list">
+					{HOTELS.map((hotel, i) => <HotelCard index={i + 1} {...hotel} />)}
+				</div>
+			</div>
+		</section>
+
+		<!-- RSVP -->
+		<section id="rsvp" class="rsvp">
+			<Image
+				src={photoClose}
+				alt="Retrato cercano de Alan y Jimena sobre fondo rojo"
+				class="rsvp-photo"
+				widths={[768, 1280, 1920, 2560, 3840]}
+				sizes="(orientation: portrait) 320vw, 100vw"
+				quality={80}
+				loading="lazy"
+			/>
+			<div class="rsvp-overlay" aria-hidden="true"></div>
+			<div class="rsvp-content">
+				<p class="eyebrow" data-reveal>Confirma tu asistencia</p>
+				<h2 class="rsvp-title" data-reveal>Te esperamos.</h2>
+				<p class="rsvp-deadline" data-reveal>
+					Por favor confirma antes del {WEDDING.rsvpDeadline}.
+				</p>
+				<a class="rsvp-button" href="#" data-reveal>Confirmar asistencia</a>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<p class="footer-monogram" aria-hidden="true">J&A</p>
+		<p class="footer-date">{WEDDING.dateLabel} — {WEDDING.location}</p>
+		<a class="footer-link" href="/recomendaciones">Guía del invitado</a>
+		<p class="footer-note">Hecho con amor (y con Astro) por el novio.</p>
+	</footer>
+</Layout>
+
+<style>
+	.section-title {
+		font-family: var(--font-display);
+		font-weight: 460;
+		font-size: clamp(2.4rem, 6vw, 4.8rem);
+		line-height: 1;
+		letter-spacing: -0.01em;
+	}
+
+	/* ---- Invitation ---- */
+	.invite {
+		background: var(--wine);
+		color: var(--ivory);
+		padding: clamp(5rem, 14vh, 10rem) var(--gutter);
+	}
+
+	.invite-inner {
+		display: grid;
+		gap: clamp(2rem, 5vh, 3.5rem);
+		max-width: 72rem;
+		margin-inline: auto;
+	}
+
+	.invite-eyebrow {
+		color: var(--ivory-dim);
+	}
+
+	.invite-statement {
+		font-family: var(--font-display);
+		font-weight: 420;
+		font-size: clamp(1.5rem, 3.4vw, 2.6rem);
+		line-height: 1.35;
+		max-width: 26em;
+	}
+
+	.invite-statement em {
+		font-style: italic;
+		color: var(--crimson-bright);
+	}
+
+	.invite-date {
+		font-family: var(--font-display);
+		font-weight: 500;
+		font-size: clamp(4.5rem, 18vw, 16rem);
+		line-height: 0.9;
+		letter-spacing: -0.02em;
+		color: var(--crimson);
+		font-variant-numeric: tabular-nums;
+	}
+
+	/* ---- B&W interlude ---- */
+	.interlude {
+		background: var(--ivory);
+		color: var(--ink);
+		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+	}
+
+	.interlude-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: clamp(2rem, 5vw, 4rem);
+		max-width: 72rem;
+		margin-inline: auto;
+		align-items: center;
+	}
+
+	.interlude-figure img {
+		width: 100%;
+		height: auto;
+	}
+
+	.interlude-quote {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 420;
+		font-size: clamp(1.4rem, 2.6vw, 2.1rem);
+		line-height: 1.35;
+		max-width: 16em;
+	}
+
+	@media (min-width: 768px) {
+		.interlude-grid {
+			grid-template-columns: 5fr 4fr;
+			grid-template-rows: auto auto;
+		}
+
+		.interlude-figure--tall {
+			grid-row: 1 / 3;
+		}
+
+		.interlude-figure--offset {
+			margin-top: -18%;
+		}
+
+		.interlude-quote {
+			align-self: end;
+			padding-bottom: 2rem;
+		}
+	}
+
+	/* ---- Program / venue ---- */
+	.program {
+		background: var(--ivory);
+		color: var(--ink);
+		padding-top: clamp(2rem, 8vh, 5rem);
+	}
+
+	.program-inner {
+		max-width: 72rem;
+		margin-inline: auto;
+		padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
+		display: grid;
+		gap: clamp(2rem, 5vh, 3.5rem);
+	}
+
+	.program-eyebrow {
+		color: var(--crimson-deep);
+	}
+
+	.program-location {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+		margin-top: -1.5rem;
+	}
+
+	.program-cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+		gap: clamp(2rem, 4vw, 3.5rem);
+	}
+
+	.program-dresscode {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.1rem, 2vw, 1.4rem);
+		max-width: var(--measure);
+	}
+
+	.program-photo img {
+		width: 100%;
+		height: clamp(20rem, 70vh, 44rem);
+		object-fit: cover;
+		object-position: center 40%;
+	}
+
+	/* ---- Hotels ---- */
+	.hotels {
+		background: var(--olive-deep);
+		color: var(--ivory);
+		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+	}
+
+	.hotels-inner {
+		max-width: 72rem;
+		margin-inline: auto;
+		display: grid;
+		gap: clamp(2.5rem, 6vw, 5rem);
+	}
+
+	@media (min-width: 900px) {
+		.hotels-inner {
+			grid-template-columns: 4fr 5fr;
+			align-items: start;
+		}
+	}
+
+	.hotels-intro {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.hotels-eyebrow {
+		color: var(--ivory-dim);
+	}
+
+	.hotels-lede {
+		max-width: var(--measure);
+		opacity: 0.85;
+	}
+
+	.hotels-guide-link {
+		justify-self: start;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid currentColor;
+		padding-bottom: 0.35em;
+	}
+
+	.hotels-guide-link:hover {
+		opacity: 0.7;
+	}
+
+	.hotels-photo {
+		margin-top: 1rem;
+	}
+
+	.hotels-photo img {
+		width: 100%;
+		height: auto;
+	}
+
+	.hotels-list {
+		display: grid;
+		gap: clamp(2rem, 4vh, 3rem);
+		align-content: start;
+	}
+
+	/* ---- RSVP ---- */
+	.rsvp {
+		position: relative;
+		min-height: 92svh;
+		display: grid;
+		place-items: center;
+		isolation: isolate;
+		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+	}
+
+	.rsvp-photo {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 18%;
+		z-index: -2;
+	}
+
+	.rsvp-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background:
+			linear-gradient(to bottom, var(--olive-deep), transparent 14%),
+			linear-gradient(to top, rgb(51 5 10 / 0.95), rgb(51 5 10 / 0.55) 38%, rgb(51 5 10 / 0.05) 70%);
+	}
+
+	.rsvp-content {
+		text-align: center;
+		display: grid;
+		justify-items: center;
+		gap: 1.25rem;
+		align-self: end;
+		color: var(--ivory);
+	}
+
+	.rsvp-title {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 440;
+		font-size: clamp(3rem, 9vw, 7rem);
+		line-height: 1;
+	}
+
+	.rsvp-deadline {
+		opacity: 0.85;
+	}
+
+	.rsvp-button {
+		font-size: 0.78rem;
+		font-weight: 650;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--ivory);
+		border: 1px solid rgb(244 236 221 / 0.7);
+		padding: 1.1rem 2.4rem;
+		margin-top: 0.75rem;
+		transition:
+			background-color 0.25s ease,
+			color 0.25s ease;
+	}
+
+	.rsvp-button:hover {
+		background: var(--ivory);
+		color: var(--crimson-deep);
+	}
+
+	/* ---- Footer ---- */
+	.footer {
+		background: var(--wine);
+		color: var(--ivory);
+		text-align: center;
+		padding: clamp(3rem, 8vh, 5rem) var(--gutter) 2.5rem;
+		display: grid;
+		gap: 0.75rem;
+		justify-items: center;
+	}
+
+	.footer-monogram {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(2.2rem, 5vw, 3.4rem);
+		line-height: 1;
+	}
+
+	.footer-date {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.34em;
+		text-transform: uppercase;
+		color: var(--ivory-dim);
+	}
+
+	.footer-link {
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid rgb(244 236 221 / 0.4);
+		padding-bottom: 0.3em;
+	}
+
+	.footer-link:hover {
+		border-color: currentColor;
+	}
+
+	.footer-note {
+		font-size: 0.8rem;
+		opacity: 0.5;
+	}
+</style>

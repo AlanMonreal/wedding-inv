@@ -1,0 +1,306 @@
+---
+/**
+ * Guest guide for out-of-town guests traveling to Cd. Victoria, Tamaulipas:
+ * hair stylists, makeup artists, and practical tips for the weekend.
+ * Vendor names, addresses, and phones are placeholder copy — swap them for
+ * the real recommendations.
+ */
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Marquee from '../components/Marquee.astro';
+import RecommendationCard from '../components/RecommendationCard.astro';
+
+import photoHug from '../assets/images/Jimena & Alan-92-top.jpg';
+import photoDetail from '../assets/images/Jimena & Alan-173-top.jpg';
+
+/** Placeholder stylists — swap for the real recommendations. */
+const HAIR = [
+	{
+		name: 'Estudio Ejemplo',
+		note: 'Donde se peina Jimena. Pide cita con tiempo: los sábados se llenan.',
+		details: ['Calle Muestra 123, Col. Centro', 'Tel. 834 000 0000'],
+		linkLabel: 'Ver en Instagram',
+		linkUrl: '#',
+	},
+	{
+		name: 'Sala Placeholder',
+		note: 'Atienden a domicilio si prefieres arreglarte en el hotel.',
+		details: ['Av. Inventada 456, Col. Jardines', 'Tel. 834 000 0001'],
+		linkLabel: 'Agendar cita',
+		linkUrl: '#',
+	},
+];
+
+/** Placeholder makeup artists — swap for the real recommendations. */
+const MAKEUP = [
+	{
+		name: 'Makeup por Ejemplo',
+		note: 'Maquillaje de larga duración, perfecto para llorar en la ceremonia.',
+		details: ['Calle Ficticia 789, Col. Centro', 'Tel. 834 000 0002'],
+		linkLabel: 'Ver en Instagram',
+		linkUrl: '#',
+	},
+	{
+		name: 'Estudio Provisional',
+		note: 'Agenda maquillaje y peinado en una sola cita.',
+		details: ['Blvd. De Muestra 1011', 'Tel. 834 000 0003'],
+		linkLabel: 'Agendar cita',
+		linkUrl: '#',
+	},
+];
+
+/** Practical tips for the weekend — adjust freely. */
+const MISC = [
+	{
+		name: 'Cómo moverte',
+		note: 'La ciudad es pequeña: casi todo queda a menos de 15 minutos.',
+		details: ['DiDi y taxis de sitio funcionan bien', 'Del aeropuerto al centro: ~25 minutos'],
+	},
+	{
+		name: 'El clima en noviembre',
+		note: 'Fresco y agradable: 15–25 °C. Trae algo para la noche.',
+		details: ['La recepción es en interior', 'Un abrigo ligero es suficiente'],
+	},
+	{
+		name: 'Farmacia y urgencias',
+		note: 'Por si el viaje se pone creativo.',
+		details: ['Farmacia Ejemplo 24 h — Av. Muestra 121', 'Tel. 834 000 0004'],
+	},
+	{
+		name: 'El desayuno del día siguiente',
+		note: 'Nuestro lugar favorito para curar la fiesta.',
+		details: ['Café Placeholder — Calle Inventada 314', 'Abre desde las 8:00 a. m.'],
+	},
+];
+---
+
+<Layout
+	title="Guía del invitado — Jimena & Alan"
+	description="Recomendaciones de estilistas, maquillaje y tips para quienes viajan a la boda de Jimena y Alan en Cd. Victoria, Tamaulipas."
+>
+	<header class="guide-hero">
+		<a class="guide-back" href="/">← Volver a la invitación</a>
+		<p class="eyebrow guide-eyebrow" data-reveal>Guía del invitado</p>
+		<h1 class="guide-title" data-reveal>Para los que viajan</h1>
+		<p class="guide-lede" data-reveal>
+			Sabemos que muchos de ustedes vienen desde lejos hasta Cd. Victoria, Tamaulipas. Aquí está
+			todo lo que nosotros les recomendaríamos: dónde peinarte, quién te maquilla y los pendientes
+			prácticos del fin de semana.
+		</p>
+	</header>
+
+	<Marquee text="Cd. Victoria, Tamaulipas — 15 de noviembre de 2026 —" />
+
+	<main>
+		<!-- Hair -->
+		<section id="peinado" class="guide-section guide-section--ivory">
+			<div class="guide-section-inner">
+				<div class="guide-section-intro">
+					<p class="eyebrow guide-section-eyebrow" data-reveal>Antes de la boda</p>
+					<h2 class="guide-section-title" data-reveal>Peinado</h2>
+					<figure class="guide-photo" data-reveal>
+						<Image
+							src={photoHug}
+							alt="Jimena abrazando a Alan por la espalda"
+							widths={[480, 768, 1080, 1600]}
+							sizes="(min-width: 900px) 34vw, 92vw"
+							quality={80}
+							loading="lazy"
+						/>
+					</figure>
+				</div>
+				<div class="guide-list">
+					{HAIR.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+				</div>
+			</div>
+		</section>
+
+		<!-- Makeup -->
+		<section id="maquillaje" class="guide-section guide-section--olive">
+			<div class="guide-section-inner">
+				<div class="guide-section-intro">
+					<p class="eyebrow" data-reveal>Antes de la boda</p>
+					<h2 class="guide-section-title" data-reveal>Maquillaje</h2>
+				</div>
+				<div class="guide-list">
+					{MAKEUP.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+				</div>
+			</div>
+		</section>
+
+		<!-- Misc -->
+		<section id="miscelaneos" class="guide-section guide-section--ivory">
+			<div class="guide-section-inner">
+				<div class="guide-section-intro">
+					<p class="eyebrow guide-section-eyebrow" data-reveal>Durante el fin de semana</p>
+					<h2 class="guide-section-title" data-reveal>Lo práctico</h2>
+					<figure class="guide-photo" data-reveal>
+						<Image
+							src={photoDetail}
+							alt="Las manos de Alan y Jimena entrelazadas, con el anillo de compromiso"
+							widths={[480, 768, 1080, 1600]}
+							sizes="(min-width: 900px) 34vw, 92vw"
+							quality={80}
+							loading="lazy"
+						/>
+					</figure>
+				</div>
+				<div class="guide-list">
+					{MISC.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="guide-footer">
+		<p class="guide-footer-monogram" aria-hidden="true">J&A</p>
+		<a class="guide-footer-link" href="/">Volver a la invitación</a>
+	</footer>
+</Layout>
+
+<style>
+	/* ---- Hero ---- */
+	.guide-hero {
+		background: var(--wine);
+		color: var(--ivory);
+		padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(4rem, 10vh, 7rem);
+		display: grid;
+		gap: clamp(1.5rem, 4vh, 2.5rem);
+		max-width: none;
+	}
+
+	.guide-back {
+		justify-self: start;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: var(--ivory-dim);
+		text-decoration: none;
+		border-bottom: 1px solid rgb(244 236 221 / 0.4);
+		padding-bottom: 0.35em;
+		margin-bottom: clamp(1.5rem, 5vh, 3rem);
+	}
+
+	.guide-back:hover {
+		color: var(--ivory);
+		border-color: currentColor;
+	}
+
+	.guide-eyebrow {
+		color: var(--ivory-dim);
+	}
+
+	.guide-title {
+		font-family: var(--font-display);
+		font-weight: 480;
+		font-size: clamp(3rem, 10vw, 8rem);
+		line-height: 0.95;
+		letter-spacing: -0.01em;
+	}
+
+	.guide-lede {
+		max-width: var(--measure);
+		font-size: clamp(1rem, 1.8vw, 1.2rem);
+		opacity: 0.9;
+	}
+
+	/* ---- Sections ---- */
+	.guide-section {
+		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+	}
+
+	.guide-section--ivory {
+		background: var(--ivory);
+		color: var(--ink);
+	}
+
+	.guide-section--olive {
+		background: var(--olive-deep);
+		color: var(--ivory);
+	}
+
+	.guide-section-inner {
+		max-width: 72rem;
+		margin-inline: auto;
+		display: grid;
+		gap: clamp(2.5rem, 6vw, 5rem);
+	}
+
+	@media (min-width: 900px) {
+		.guide-section-inner {
+			grid-template-columns: 4fr 5fr;
+			align-items: start;
+		}
+	}
+
+	.guide-section-intro {
+		display: grid;
+		gap: 1.5rem;
+		align-content: start;
+	}
+
+	.guide-section-eyebrow {
+		color: var(--crimson-deep);
+	}
+
+	.guide-section-title {
+		font-family: var(--font-display);
+		font-weight: 460;
+		font-size: clamp(2.4rem, 6vw, 4.8rem);
+		line-height: 1;
+		letter-spacing: -0.01em;
+	}
+
+	.guide-photo {
+		margin-top: 1rem;
+	}
+
+	.guide-photo img {
+		width: 100%;
+		height: auto;
+	}
+
+	.guide-list {
+		display: grid;
+		gap: clamp(2rem, 4vh, 3rem);
+		align-content: start;
+	}
+
+	/* Cards draw a border with currentColor; soften it per ground */
+	.guide-section--ivory .guide-list {
+		color: var(--ink);
+	}
+
+	/* ---- Footer ---- */
+	.guide-footer {
+		background: var(--wine);
+		color: var(--ivory);
+		text-align: center;
+		padding: clamp(3rem, 8vh, 5rem) var(--gutter) 2.5rem;
+		display: grid;
+		gap: 1rem;
+		justify-items: center;
+	}
+
+	.guide-footer-monogram {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(2.2rem, 5vw, 3.4rem);
+		line-height: 1;
+	}
+
+	.guide-footer-link {
+		font-size: 0.78rem;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid rgb(244 236 221 / 0.4);
+		padding-bottom: 0.3em;
+	}
+
+	.guide-footer-link:hover {
+		border-color: currentColor;
+	}
+</style>

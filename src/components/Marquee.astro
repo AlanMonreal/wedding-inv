@@ -1,0 +1,67 @@
+---
+/**
+ * Editorial marquee strip: the couple's names and date repeated as a slow
+ * horizontal ticker between sections. Pauses (renders static) when the
+ * visitor prefers reduced motion.
+ *
+ * @prop {string} text - The phrase to repeat across the strip.
+ */
+interface Props {
+	text: string;
+}
+
+const { text } = Astro.props;
+const REPETITIONS = 6;
+---
+
+<div class="marquee" aria-hidden="true">
+	<div class="marquee-track">
+		{Array.from({ length: 2 }).map(() => (
+			<span class="marquee-run">
+				{Array.from({ length: REPETITIONS }).map(() => <span class="marquee-item">{text}</span>)}
+			</span>
+		))}
+	</div>
+</div>
+
+<style>
+	.marquee {
+		overflow: hidden;
+		border-block: 1px solid rgb(244 236 221 / 0.25);
+		padding: 0.9rem 0;
+		background: var(--olive-deep);
+		color: var(--ivory);
+	}
+
+	.marquee-track {
+		display: flex;
+		width: max-content;
+		animation: marquee-scroll 36s linear infinite;
+	}
+
+	.marquee-run {
+		display: flex;
+		flex: none;
+	}
+
+	.marquee-item {
+		flex: none;
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1rem, 2.4vw, 1.5rem);
+		white-space: nowrap;
+		padding-right: 3rem;
+	}
+
+	@keyframes marquee-scroll {
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.marquee-track {
+			animation: none;
+		}
+	}
+</style>

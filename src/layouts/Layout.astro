@@ -1,0 +1,153 @@
+---
+/**
+ * Base layout for the wedding invitation site.
+ * Loads the chosen fonts (Playfair Display + Archivo), defines the global
+ * design tokens sampled from the couple's engagement photos (crimson studio
+ * backdrop, olive velvet, ivory), and wires the scroll-reveal behavior
+ * shared by every section.
+ *
+ * @prop {string} title - Document title.
+ * @prop {string} [description] - Meta description for the page.
+ */
+import '@fontsource-variable/playfair-display/wght.css';
+import '@fontsource-variable/playfair-display/wght-italic.css';
+import '@fontsource-variable/archivo/wght.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = 'Jimena & Alan se casan — 15 de noviembre de 2026 en Cd. Victoria, Tamaulipas.' } =
+	Astro.props;
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<script>
+	/**
+	 * Reveals elements marked with [data-reveal] as they enter the viewport.
+	 * Falls back to showing everything immediately when the visitor prefers
+	 * reduced motion or the browser lacks IntersectionObserver.
+	 */
+	const revealTargets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	if (reduceMotion || !('IntersectionObserver' in window)) {
+		revealTargets.forEach((el) => el.classList.add('is-visible'));
+	} else {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
+					}
+				}
+			},
+			{ threshold: 0.18, rootMargin: '0px 0px -8% 0px' },
+		);
+		revealTargets.forEach((el) => observer.observe(el));
+	}
+</script>
+
+<style is:global>
+	:root {
+		/* Sampled from the engagement photos */
+		--crimson: #a82828; /* studio backdrop, dominant */
+		--crimson-bright: #b93434; /* backdrop hot center */
+		--crimson-deep: #6e070d; /* backdrop vignette */
+		--wine: #33050a; /* deepest corner of the backdrop */
+		--olive: #55591f; /* velvet couch */
+		--olive-deep: #2c3a06; /* couch shadow */
+		--ivory: #f4ecdd; /* her dress, warm paper */
+		--ivory-dim: #e5d9c4;
+		--ink: #201410; /* his glasses, near-black warm */
+
+		--font-display: 'Playfair Display Variable', Georgia, 'Times New Roman', serif;
+		--font-body: 'Archivo Variable', 'Helvetica Neue', Arial, sans-serif;
+
+		--measure: 34em;
+		--gutter: clamp(1.25rem, 5vw, 4rem);
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		font-family: var(--font-body);
+		font-weight: 400;
+		background: var(--wine);
+		color: var(--ivory);
+		line-height: 1.6;
+		-webkit-font-smoothing: antialiased;
+		overflow-x: clip;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	::selection {
+		background: var(--olive);
+		color: var(--ivory);
+	}
+
+	:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 3px;
+	}
+
+	/* Shared editorial primitives */
+	.eyebrow {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.34em;
+		text-transform: uppercase;
+	}
+
+	[data-reveal] {
+		opacity: 0;
+		transform: translateY(1.75rem);
+		transition:
+			opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+			transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	[data-reveal].is-visible {
+		opacity: 1;
+		transform: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+		[data-reveal] {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
+</style>

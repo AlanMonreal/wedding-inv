@@ -1,0 +1,104 @@
+---
+/**
+ * A recommended vendor or tip for traveling guests (stylist, makeup artist,
+ * transport, etc.): name, why it's recommended, detail lines, and an
+ * optional contact link. Rendered as a numbered guide entry.
+ *
+ * @prop {number} index - Position within its section (1-based).
+ * @prop {string} name - Vendor or tip name.
+ * @prop {string} note - One-line reason it's recommended.
+ * @prop {string[]} details - Detail lines (address, phone, schedule…).
+ * @prop {string} [linkLabel] - Text for the contact link, if any.
+ * @prop {string} [linkUrl] - Contact link destination, if any (opens in a new tab when external).
+ */
+interface Props {
+	index: number;
+	name: string;
+	note: string;
+	details: string[];
+	linkLabel?: string;
+	linkUrl?: string;
+}
+
+const { index, name, note, details, linkLabel, linkUrl } = Astro.props;
+const isExternal = linkUrl?.startsWith('http') ?? false;
+---
+
+<article class="rec" data-reveal>
+	<p class="rec-index" aria-hidden="true">{String(index).padStart(2, '0')}</p>
+	<div class="rec-body">
+		<h3 class="rec-name">{name}</h3>
+		<p class="rec-note">{note}</p>
+		{details.map((line) => <p class="rec-detail">{line}</p>)}
+		{
+			linkUrl && linkLabel && (
+				<a
+					class="rec-link"
+					href={linkUrl}
+					target={isExternal ? '_blank' : undefined}
+					rel={isExternal ? 'noopener noreferrer' : undefined}
+				>
+					{linkLabel}
+				</a>
+			)
+		}
+	</div>
+</article>
+
+<style>
+	.rec {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: clamp(1rem, 3vw, 2.5rem);
+		border-top: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+		padding-top: 1.5rem;
+	}
+
+	.rec-index {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 1.1rem;
+		opacity: 0.6;
+	}
+
+	.rec-body {
+		display: grid;
+		gap: 0.4rem;
+		justify-items: start;
+	}
+
+	.rec-name {
+		font-family: var(--font-display);
+		font-weight: 460;
+		font-size: clamp(1.5rem, 3vw, 2.2rem);
+		line-height: 1.1;
+	}
+
+	.rec-note {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 1.05rem;
+		opacity: 0.9;
+	}
+
+	.rec-detail {
+		font-size: 0.9rem;
+		opacity: 0.7;
+	}
+
+	.rec-link {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid currentColor;
+		padding-bottom: 0.35em;
+		margin-top: 0.6rem;
+	}
+
+	.rec-link:hover {
+		opacity: 0.65;
+	}
+</style>

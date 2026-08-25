@@ -1,0 +1,110 @@
+---
+/**
+ * Live countdown to the wedding, set in Bodoni numerals.
+ * Renders the final values server-side as a static fallback and updates
+ * once per second on the client. When the date arrives it swaps to a
+ * celebratory message.
+ *
+ * @prop {string} targetIso - Wedding date-time as an ISO 8601 string with offset.
+ */
+interface Props {
+	targetIso: string;
+}
+
+const { targetIso } = Astro.props;
+
+const UNIT_LABELS = [
+	['days', 'días'],
+	['hours', 'horas'],
+	['minutes', 'minutos'],
+	['seconds', 'segundos'],
+] as const;
+---
+
+<div class="countdown" data-countdown data-target={targetIso}>
+	{
+		UNIT_LABELS.map(([unit, label]) => (
+			<div class="countdown-unit">
+				<span class="countdown-value" data-unit={unit}>
+					—
+				</span>
+				<span class="countdown-label">{label}</span>
+			</div>
+		))
+	}
+</div>
+
+<script>
+	/**
+	 * Computes the remaining time to the target date and paints each unit.
+	 * Stops ticking once the date is reached.
+	 */
+	const root = document.querySelector<HTMLElement>('[data-countdown]');
+	if (root) {
+		const target = new Date(root.dataset.target ?? '').getTime();
+		const fields = {
+			days: root.querySelector('[data-unit="days"]'),
+			hours: root.querySelector('[data-unit="hours"]'),
+			minutes: root.querySelector('[data-unit="minutes"]'),
+			seconds: root.querySelector('[data-unit="seconds"]'),
+		};
+
+		const paint = () => {
+			const remaining = target - Date.now();
+			if (remaining <= 0) {
+				root.innerHTML = '<p class="countdown-done">¡Hoy es el gran día!</p>';
+				clearInterval(timer);
+				return;
+			}
+			const totalSeconds = Math.floor(remaining / 1000);
+			const values = {
+				days: Math.floor(totalSeconds / 86400),
+				hours: Math.floor((totalSeconds % 86400) / 3600),
+				minutes: Math.floor((totalSeconds % 3600) / 60),
+				seconds: totalSeconds % 60,
+			};
+			for (const [unit, el] of Object.entries(fields)) {
+				if (el) el.textContent = String(values[unit as keyof typeof values]).padStart(2, '0');
+			}
+		};
+
+		const timer = setInterval(paint, 1000);
+		paint();
+	}
+</script>
+
+<style>
+	.countdown {
+		display: flex;
+		flex-wrap: wrap;
+		gap: clamp(1.5rem, 5vw, 4.5rem);
+	}
+
+	.countdown-unit {
+		display: grid;
+		gap: 0.25rem;
+	}
+
+	.countdown-value {
+		font-family: var(--font-display);
+		font-weight: 420;
+		font-variation-settings: 'opsz' 96;
+		font-size: clamp(2.6rem, 7vw, 5.5rem);
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.countdown-label {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.28em;
+		text-transform: uppercase;
+		opacity: 0.65;
+	}
+
+	.countdown :global(.countdown-done) {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: clamp(1.8rem, 4vw, 3rem);
+	}
+</style>

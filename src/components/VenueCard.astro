@@ -1,0 +1,112 @@
+---
+/**
+ * One venue of the wedding day with the moments that happen there — the
+ * church (ceremony) or the reception hall (welcome cocktail + reception).
+ * Each moment renders as a label/time row; the map link pins to the card's
+ * bottom so links align across the program grid.
+ *
+ * @prop {Array<{moment: string, time: string}>} moments - What happens at this venue, in order.
+ * @prop {string} venueName - Name of the place.
+ * @prop {string} address - Street address or locality.
+ * @prop {string} mapUrl - Link to the map location (opens in a new tab when external).
+ */
+interface Props {
+	moments: { moment: string; time: string }[];
+	venueName: string;
+	address: string;
+	mapUrl: string;
+}
+
+const { moments, venueName, address, mapUrl } = Astro.props;
+const isExternal = mapUrl.startsWith('http');
+---
+
+<article class="venue" data-reveal>
+	<div class="venue-moments">
+		{
+			moments.map(({ moment, time }) => (
+				<div class="venue-head">
+					<h3 class="venue-moment">{moment}</h3>
+					<p class="venue-time">{time}</p>
+				</div>
+			))
+		}
+	</div>
+	<p class="venue-name">{venueName}</p>
+	<p class="venue-address">{address}</p>
+	<a
+		class="venue-map"
+		href={mapUrl}
+		target={isExternal ? '_blank' : undefined}
+		rel={isExternal ? 'noopener noreferrer' : undefined}
+	>
+		Ver en el mapa
+	</a>
+</article>
+
+<style>
+	.venue {
+		border-top: 1px solid rgb(32 20 16 / 0.35);
+		padding-top: 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.65rem;
+	}
+
+	.venue-moments {
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.venue-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+
+	.venue-moment {
+		font-size: 0.72rem;
+		font-weight: 650;
+		letter-spacing: 0.34em;
+		text-transform: uppercase;
+	}
+
+	.venue-time {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-size: 1.15rem;
+		white-space: nowrap;
+	}
+
+	.venue-name {
+		font-family: var(--font-display);
+		font-weight: 460;
+		font-size: clamp(1.9rem, 4vw, 3rem);
+		line-height: 1.05;
+	}
+
+	.venue-address {
+		max-width: var(--measure);
+		opacity: 0.8;
+	}
+
+	/* margin-top: auto pins the link to the card foot so it aligns across the grid */
+	.venue-map {
+		align-self: start;
+		margin-top: auto;
+		padding-top: 1rem;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: inherit;
+		text-decoration: none;
+		border-bottom: 1px solid currentColor;
+		padding-bottom: 0.35em;
+	}
+
+	.venue-map:hover {
+		opacity: 0.65;
+	}
+</style>
