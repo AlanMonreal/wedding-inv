@@ -3,8 +3,9 @@
  * Base layout for the wedding invitation site.
  * Loads the chosen fonts (Playfair Display + Archivo), defines the global
  * design tokens sampled from the couple's engagement photos (crimson studio
- * backdrop, olive velvet, ivory), and wires the scroll-reveal behavior
- * shared by every section.
+ * backdrop, olive velvet, ivory), wires the scroll-reveal behavior shared by
+ * every section, and keeps every page out of search engines — this is a
+ * private invitation, not a public site.
  *
  * @prop {string} title - Document title.
  * @prop {string} [description] - Meta description for the page.
@@ -29,6 +30,7 @@ const { title, description = 'Jimena & Alan se casan — 15 de noviembre de 2026
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
+		<meta name="robots" content="noindex, nofollow" />
 		<title>{title}</title>
 	</head>
 	<body>

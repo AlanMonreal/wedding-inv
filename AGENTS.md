@@ -47,6 +47,7 @@ Manage the background server with `astro dev stop`, `astro dev status`, and `ast
 
 - Use TypeScript for type safety.
 - Handle errors at actual boundaries (data fetching, external calls) — don't add speculative error handling for cases that can't occur.
+- Write all code comments, file/variable/component names, commit messages, and documentation (this file, README, etc.) in English. This does not apply to the guest-facing copy rendered on the page (invitation text, venue names, RSVP labels) — that stays in Spanish for the wedding's Spanish-speaking guests.
 
 ## Documentation
 

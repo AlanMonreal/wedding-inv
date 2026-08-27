@@ -2,14 +2,17 @@
 /**
  * Full-viewport hero: the couple photographed against the crimson studio
  * backdrop, with the invitation masthead set over the backdrop's negative
- * space. A gradient foot dissolves the photo into the page ground so the
- * site reads as a continuation of the studio wall.
+ * space. The masthead row carries a link to the guest guide; a gradient
+ * foot dissolves the photo into the page ground so the site reads as a
+ * continuation of the studio wall.
  *
  * @prop {string} coupleNames - Names as they appear on the masthead.
  * @prop {string} dateLabel - Human-readable wedding date.
  */
 import { Image } from 'astro:assets';
 import heroPhoto from '../assets/images/Jimena & Alan-112-top.jpg';
+// import heroPhoto from '../assets/images/Jimena & Alan-122-must.jpg';
+// import heroPhoto from '../assets/images/Jimena & Alan-28-edit.jpeg';
 
 interface Props {
 	coupleNames: string;
@@ -21,6 +24,7 @@ const [firstName, secondName] = coupleNames.split(' & ');
 ---
 
 <header class="hero">
+	<!-- sizes="(orientation: portrait) 320vw, 100vw" -->
 	<Image
 		src={heroPhoto}
 		alt={`${coupleNames} frente al fondo rojo de su sesión de compromiso`}
@@ -34,7 +38,10 @@ const [firstName, secondName] = coupleNames.split(' & ');
 	<div class="hero-overlay" aria-hidden="true"></div>
 
 	<div class="hero-masthead">
-		<p class="eyebrow hero-kicker">¡Nos casamos!</p>
+		<div class="hero-top">
+			<p class="eyebrow hero-kicker">¡Nos casamos!</p>
+			<a class="hero-guide" href="/recomendaciones">Guía del invitado →</a>
+		</div>
 		<h1 class="hero-names">
 			<span class="hero-name">{firstName}</span>
 			<span class="hero-amp" aria-hidden="true">&amp;</span>
@@ -63,9 +70,12 @@ const [firstName, secondName] = coupleNames.split(' & ');
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		object-position: 50% 78%;
+		object-position: 50% 75%;
 		z-index: -2;
 	}
+	/* object-position: 50% 78%; */
+	/* object-position: 50% 35%; */
+	/* object-position: 50% 25%; */
 
 	/* Dissolves the photo's vignette into the page ground below */
 	.hero-overlay {
@@ -81,9 +91,33 @@ const [firstName, secondName] = coupleNames.split(' & ');
 		padding: clamp(1.5rem, 4vh, 3.5rem) var(--gutter) 0;
 	}
 
+	.hero-top {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 1rem 2rem;
+		flex-wrap: wrap;
+		margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
+	}
+
 	.hero-kicker {
 		color: var(--ivory-dim);
-		margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
+	}
+
+	.hero-guide {
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: var(--ivory-dim);
+		text-decoration: none;
+		border-bottom: 1px solid rgb(244 236 221 / 0.4);
+		padding-bottom: 0.35em;
+	}
+
+	.hero-guide:hover {
+		color: var(--ivory);
+		border-color: var(--ivory);
 	}
 
 	.hero-names {

@@ -4,8 +4,10 @@
  * Cd. Victoria, Tamaulipas. A single editorial page that continues the
  * crimson studio backdrop of their engagement shoot: hero masthead,
  * invitation + countdown, black & white interlude, wedding-day program,
- * hotel recommendations, and RSVP. Hotel addresses and the RSVP link are
- * still placeholder copy.
+ * gift information, and a closing photo. Hotel recommendations now live
+ * in the guest guide (/recomendaciones). RSVP logistics are handled
+ * separately by the wedding planners, so this page carries no RSVP form
+ * or link.
  */
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
@@ -13,11 +15,13 @@ import Hero from '../components/Hero.astro';
 import Countdown from '../components/Countdown.astro';
 import Marquee from '../components/Marquee.astro';
 import VenueCard from '../components/VenueCard.astro';
-import HotelCard from '../components/HotelCard.astro';
+import RecommendationCard from '../components/RecommendationCard.astro';
 
 import photoLaugh from '../assets/images/Jimena & Alan-50-top.jpg';
 import photoProfile from '../assets/images/Jimena & Alan-49-top.jpg';
 import photoChair from '../assets/images/Jimena & Alan-115-top.jpg';
+// import photoChair from '../assets/images/Jimena & Alan-28-edit.jpeg';
+
 import photoCouch from '../assets/images/Jimena & Alan-63-top.jpg';
 import photoClose from '../assets/images/Jimena & Alan-126-top.jpg';
 
@@ -26,7 +30,6 @@ const WEDDING = {
 	dateLabel: '15 · noviembre · 2026',
 	dateShort: '15.11.26',
 	dateIso: '2026-11-15T17:00:00-06:00',
-	rsvpDeadline: '15 de octubre de 2026',
 	location: 'Cd. Victoria, Tamaulipas',
 };
 
@@ -49,28 +52,21 @@ const PROGRAM = [
 	},
 ];
 
-/** Placeholder hotels — swap names, addresses, and booking links. */
-const HOTELS = [
+/** The two ways to give a gift: cash in an envelope at the reception, or bank transfer. */
+const GIFT_OPTIONS = [
 	{
-		name: 'Gran Hotel Ejemplo',
-		address: 'Blvd. Ficticio 456, Cd. Victoria, Tamps.',
-		distance: 'A 10 minutos de la recepción',
-		note: 'Tarifa preferente con el código JIMENA&ALAN.',
-		bookingUrl: '#',
+		name: 'Sobre en la recepción',
+		note: 'La opción más sencilla: busca la mesa de sobres el día de la boda.',
+		details: ['No es necesario avisarnos con anticipación.'],
 	},
 	{
-		name: 'Casa Placeholder',
-		address: 'Calle Inventada 789, Cd. Victoria, Tamps.',
-		distance: 'A 15 minutos de la recepción',
-		note: 'Hotel boutique, ideal para quienes llegan en pareja.',
-		bookingUrl: '#',
-	},
-	{
-		name: 'Hotel Provisional Inn',
-		address: 'Av. De Muestra 1011, Cd. Victoria, Tamps.',
-		distance: 'A 5 minutos de la ceremonia',
-		note: 'La opción más práctica y cómoda para familias.',
-		bookingUrl: '#',
+		name: 'Transferencia bancaria',
+		note: 'Si les es más cómodo, aquí tienen nuestros datos con todo gusto.',
+		details: [
+			'Beneficiario: A Monreal Angeles & J López Ruiz',
+			'CLABE: 646990404078498921',
+			'Banco: STP',
+		],
 	},
 ];
 ---
@@ -137,10 +133,16 @@ const HOTELS = [
 				<div class="program-cards">
 					{PROGRAM.map((entry) => <VenueCard {...entry} />)}
 				</div>
+				<p class="program-notice" data-reveal>
+					Es una boda solo para adultos — con mucho cariño, les pedimos no traer niños.
+				</p>
 				<p class="program-dresscode" data-reveal>
 					Código de vestimenta: <em>formal</em>. El rojo es nuestro — todos los demás colores son
 					suyos.
 				</p>
+				<a class="program-guide-link" href="/recomendaciones" data-reveal>
+					¿Vienes de fuera? Lee la guía del invitado →
+				</a>
 			</div>
 			<figure class="program-photo" data-reveal>
 				<Image
@@ -154,55 +156,48 @@ const HOTELS = [
 			</figure>
 		</section>
 
-		<!-- Hotels -->
-		<section id="hoteles" class="hotels">
-			<div class="hotels-inner">
-				<div class="hotels-intro">
-					<p class="eyebrow hotels-eyebrow" data-reveal>Para quienes vienen de fuera</p>
-					<h2 class="section-title" data-reveal>Dónde hospedarte</h2>
-					<p class="hotels-lede" data-reveal>
-						Reservamos tarifas especiales en estos hoteles. Menciona la boda de Jimena y Alan al
-						reservar.
+		<!-- Gift -->
+		<section id="regalo" class="gift">
+			<div class="gift-inner">
+				<div class="gift-intro">
+					<p class="eyebrow gift-eyebrow" data-reveal>Un detalle, si gustan</p>
+					<h2 class="section-title" data-reveal>Sobre los regalos</h2>
+					<p class="gift-lede" data-reveal>
+						Tenerlos ahí con nosotros ya es todo lo que necesitamos. Si de cualquier forma quieren
+						tener un detalle, un sobre con efectivo se agradece de corazón.
 					</p>
-					<a class="hotels-guide-link" href="/recomendaciones" data-reveal>
-						¿Vienes de fuera? Lee la guía del invitado →
-					</a>
-					<figure class="hotels-photo" data-reveal>
-						<Image
-							src={photoCouch}
-							alt="Alan y Jimena en un sillón de terciopelo verde olivo"
-							widths={[480, 768, 1080, 1600, 2200]}
-							sizes="(min-width: 900px) 38vw, 92vw"
-							quality={80}
-							loading="lazy"
-						/>
-					</figure>
 				</div>
-				<div class="hotels-list">
-					{HOTELS.map((hotel, i) => <HotelCard index={i + 1} {...hotel} />)}
+				<figure class="gift-photo" data-reveal>
+					<Image
+						src={photoCouch}
+						alt="Alan y Jimena en un sillón de terciopelo verde olivo"
+						widths={[480, 768, 1080, 1600, 2200]}
+						sizes="(min-width: 900px) 42vw, 92vw"
+						quality={80}
+						loading="lazy"
+					/>
+				</figure>
+				<div class="gift-list">
+					{GIFT_OPTIONS.map((option, i) => <RecommendationCard index={i + 1} {...option} />)}
 				</div>
 			</div>
 		</section>
 
-		<!-- RSVP -->
-		<section id="rsvp" class="rsvp">
+		<!-- Closing photo -->
+		<section id="despedida" class="closing">
 			<Image
 				src={photoClose}
 				alt="Retrato cercano de Alan y Jimena sobre fondo rojo"
-				class="rsvp-photo"
+				class="closing-photo"
 				widths={[768, 1280, 1920, 2560, 3840]}
 				sizes="(orientation: portrait) 320vw, 100vw"
 				quality={80}
 				loading="lazy"
 			/>
-			<div class="rsvp-overlay" aria-hidden="true"></div>
-			<div class="rsvp-content">
-				<p class="eyebrow" data-reveal>Confirma tu asistencia</p>
-				<h2 class="rsvp-title" data-reveal>Te esperamos.</h2>
-				<p class="rsvp-deadline" data-reveal>
-					Por favor confirma antes del {WEDDING.rsvpDeadline}.
-				</p>
-				<a class="rsvp-button" href="#" data-reveal>Confirmar asistencia</a>
+			<div class="closing-overlay" aria-hidden="true"></div>
+			<div class="closing-content">
+				<p class="eyebrow" data-reveal>Nos vemos pronto</p>
+				<h2 class="closing-title" data-reveal>Te esperamos.</h2>
 			</div>
 		</section>
 	</main>
@@ -347,6 +342,14 @@ const HOTELS = [
 		gap: clamp(2rem, 4vw, 3.5rem);
 	}
 
+	.program-notice {
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--crimson-deep);
+		max-width: var(--measure);
+	}
+
 	.program-dresscode {
 		font-family: var(--font-display);
 		font-style: italic;
@@ -354,49 +357,7 @@ const HOTELS = [
 		max-width: var(--measure);
 	}
 
-	.program-photo img {
-		width: 100%;
-		height: clamp(20rem, 70vh, 44rem);
-		object-fit: cover;
-		object-position: center 40%;
-	}
-
-	/* ---- Hotels ---- */
-	.hotels {
-		background: var(--olive-deep);
-		color: var(--ivory);
-		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
-	}
-
-	.hotels-inner {
-		max-width: 72rem;
-		margin-inline: auto;
-		display: grid;
-		gap: clamp(2.5rem, 6vw, 5rem);
-	}
-
-	@media (min-width: 900px) {
-		.hotels-inner {
-			grid-template-columns: 4fr 5fr;
-			align-items: start;
-		}
-	}
-
-	.hotels-intro {
-		display: grid;
-		gap: 1.5rem;
-	}
-
-	.hotels-eyebrow {
-		color: var(--ivory-dim);
-	}
-
-	.hotels-lede {
-		max-width: var(--measure);
-		opacity: 0.85;
-	}
-
-	.hotels-guide-link {
+	.program-guide-link {
 		justify-self: start;
 		font-size: 0.78rem;
 		font-weight: 600;
@@ -408,27 +369,84 @@ const HOTELS = [
 		padding-bottom: 0.35em;
 	}
 
-	.hotels-guide-link:hover {
-		opacity: 0.7;
+	.program-guide-link:hover {
+		opacity: 0.65;
 	}
 
-	.hotels-photo {
-		margin-top: 1rem;
+	.program-photo img {
+		width: 100%;
+		height: clamp(20rem, 70vh, 44rem);
+		object-fit: cover;
+		object-position: center 40%;
 	}
 
-	.hotels-photo img {
+	/* object-position: 50% 25%; */
+
+	/* ---- Gift ---- */
+	.gift {
+		background: var(--olive-deep);
+		color: var(--ivory);
+		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+	}
+
+	/* Editorial split: the uncropped portrait is a full column on desktop;
+	   the intro and the two gift entries stack beside it and match its height */
+	.gift-inner {
+		max-width: 72rem;
+		margin-inline: auto;
+		display: grid;
+		grid-template-areas:
+			'intro'
+			'photo'
+			'list';
+		gap: clamp(2.5rem, 6vw, 4rem);
+	}
+
+	@media (min-width: 900px) {
+		.gift-inner {
+			grid-template-areas:
+				'photo intro'
+				'photo list';
+			grid-template-columns: 5fr 6fr;
+			grid-template-rows: auto 1fr;
+			column-gap: clamp(3rem, 6vw, 5rem);
+		}
+	}
+
+	.gift-intro {
+		grid-area: intro;
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.gift-eyebrow {
+		color: var(--ivory-dim);
+	}
+
+	.gift-lede {
+		max-width: var(--measure);
+		opacity: 0.85;
+	}
+
+	.gift-photo {
+		grid-area: photo;
+		align-self: center;
+	}
+
+	.gift-photo img {
 		width: 100%;
 		height: auto;
 	}
 
-	.hotels-list {
+	.gift-list {
+		grid-area: list;
 		display: grid;
 		gap: clamp(2rem, 4vh, 3rem);
 		align-content: start;
 	}
 
-	/* ---- RSVP ---- */
-	.rsvp {
+	/* ---- Closing photo ---- */
+	.closing {
 		position: relative;
 		min-height: 92svh;
 		display: grid;
@@ -437,7 +455,7 @@ const HOTELS = [
 		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
 	}
 
-	.rsvp-photo {
+	.closing-photo {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -447,7 +465,7 @@ const HOTELS = [
 		z-index: -2;
 	}
 
-	.rsvp-overlay {
+	.closing-overlay {
 		position: absolute;
 		inset: 0;
 		z-index: -1;
@@ -456,7 +474,7 @@ const HOTELS = [
 			linear-gradient(to top, rgb(51 5 10 / 0.95), rgb(51 5 10 / 0.55) 38%, rgb(51 5 10 / 0.05) 70%);
 	}
 
-	.rsvp-content {
+	.closing-content {
 		text-align: center;
 		display: grid;
 		justify-items: center;
@@ -465,36 +483,12 @@ const HOTELS = [
 		color: var(--ivory);
 	}
 
-	.rsvp-title {
+	.closing-title {
 		font-family: var(--font-display);
 		font-style: italic;
 		font-weight: 440;
 		font-size: clamp(3rem, 9vw, 7rem);
 		line-height: 1;
-	}
-
-	.rsvp-deadline {
-		opacity: 0.85;
-	}
-
-	.rsvp-button {
-		font-size: 0.78rem;
-		font-weight: 650;
-		letter-spacing: 0.28em;
-		text-transform: uppercase;
-		text-decoration: none;
-		color: var(--ivory);
-		border: 1px solid rgb(244 236 221 / 0.7);
-		padding: 1.1rem 2.4rem;
-		margin-top: 0.75rem;
-		transition:
-			background-color 0.25s ease,
-			color 0.25s ease;
-	}
-
-	.rsvp-button:hover {
-		background: var(--ivory);
-		color: var(--crimson-deep);
 	}
 
 	/* ---- Footer ---- */

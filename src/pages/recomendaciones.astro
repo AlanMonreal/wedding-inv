@@ -1,51 +1,76 @@
 ---
 /**
  * Guest guide for out-of-town guests traveling to Cd. Victoria, Tamaulipas:
- * hair stylists, makeup artists, and practical tips for the weekend.
- * Vendor names, addresses, and phones are placeholder copy — swap them for
- * the real recommendations.
+ * hotel recommendations, hair/makeup recommendations, and practical tips
+ * for the weekend. Hotels and beauty recommendations are real; the
+ * practical-tips section still carries placeholder copy — swap it for the
+ * real recommendations.
  */
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Marquee from '../components/Marquee.astro';
 import RecommendationCard from '../components/RecommendationCard.astro';
-
+import photoStairs from '../assets/images/Jimena & Alan-29-edit.jpeg';
 import photoHug from '../assets/images/Jimena & Alan-92-top.jpg';
 import photoDetail from '../assets/images/Jimena & Alan-173-top.jpg';
 
-/** Placeholder stylists — swap for the real recommendations. */
-const HAIR = [
+/** Recommended hotels, both a 5-minute drive from the reception at Salón Andare. */
+const HOTELS = [
 	{
-		name: 'Estudio Ejemplo',
-		note: 'Donde se peina Jimena. Pide cita con tiempo: los sábados se llenan.',
-		details: ['Calle Muestra 123, Col. Centro', 'Tel. 834 000 0000'],
-		linkLabel: 'Ver en Instagram',
-		linkUrl: '#',
+		name: 'City Express by Marriott Ciudad Victoria',
+		note: 'Cadena confiable, cómoda para llegar tarde después de la fiesta.',
+		details: ['Cd. Victoria, Tamaulipas', 'A 5 minutos de la recepción'],
+		links: [{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/mJiTVcpR9xE6iP397' }],
 	},
 	{
-		name: 'Sala Placeholder',
-		note: 'Atienden a domicilio si prefieres arreglarte en el hotel.',
-		details: ['Av. Inventada 456, Col. Jardines', 'Tel. 834 000 0001'],
-		linkLabel: 'Agendar cita',
-		linkUrl: '#',
+		name: 'iStay Hotel Ciudad Victoria',
+		note: 'Hotel moderno, muy cerca de Salón Andare.',
+		details: ['Cd. Victoria, Tamaulipas', 'A 5 minutos de la recepción'],
+		links: [{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/GtHtbrD6i9aSMmx79' }],
 	},
 ];
 
-/** Placeholder makeup artists — swap for the real recommendations. */
-const MAKEUP = [
+/** Hair, makeup, and beauty recommendations — one merged list since each vendor only covers part of the service. */
+const BEAUTY = [
 	{
-		name: 'Makeup por Ejemplo',
-		note: 'Maquillaje de larga duración, perfecto para llorar en la ceremonia.',
-		details: ['Calle Ficticia 789, Col. Centro', 'Tel. 834 000 0002'],
-		linkLabel: 'Ver en Instagram',
-		linkUrl: '#',
+		name: 'Shey Salón',
+		note: 'Cabello y uñas, para llegar impecable a la fiesta.',
+		details: ['Cd. Victoria, Tamaulipas', 'Citas solo por WhatsApp.'],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/We1DG3ggahg8AvTx5' },
+			{ label: 'WhatsApp', url: 'https://wa.me/528341414132' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/sheysalonmx/' },
+		],
 	},
 	{
-		name: 'Estudio Provisional',
-		note: 'Agenda maquillaje y peinado en una sola cita.',
-		details: ['Blvd. De Muestra 1011', 'Tel. 834 000 0003'],
-		linkLabel: 'Agendar cita',
-		linkUrl: '#',
+		name: 'Itzel Alonso · Studio',
+		note: 'Maquillaje editorial que vale la vuelta, aunque esté un poco más lejos.',
+		details: ['Cd. Victoria, Tamaulipas', 'Citas solo por WhatsApp.'],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/nkE3ouUyKs3TkW2h7' },
+			{ label: 'WhatsApp', url: 'https://wa.me/5218342534454' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/itzelalonso.beautystudio' },
+		],
+	},
+	{
+		name: 'Maquillarte by Cinthia Sánchez',
+		note: 'Maquillaje profesional a un paso de la recepción.',
+		details: ['Cd. Victoria, Tamaulipas', 'Citas solo por WhatsApp.'],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/PJYnhTGMzPmfoLHk9' },
+			{ label: 'WhatsApp', url: 'https://wa.me/message/FSXIHDRVPDWTF1' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/maquillartee' },
+		],
+	},
+	{
+		name: 'Mas Bonita Beauty Lab',
+		note: 'Cabello, pestañas, uñas y maquillaje — todo en un solo lugar.',
+		details: ['Cd. Victoria, Tamaulipas', 'Agenda tu cita en línea.'],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/UMx8eFEopjaiWtYH6' },
+			{ label: 'Agendar cita', url: 'https://view.genially.com/688b82060546b21eaee2d058' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/mas.bonitamx/' },
+		],
 	},
 ];
 
@@ -84,20 +109,47 @@ const MISC = [
 		<h1 class="guide-title" data-reveal>Para los que viajan</h1>
 		<p class="guide-lede" data-reveal>
 			Sabemos que muchos de ustedes vienen desde lejos hasta Cd. Victoria, Tamaulipas. Aquí está
-			todo lo que nosotros les recomendaríamos: dónde peinarte, quién te maquilla y los pendientes
-			prácticos del fin de semana.
+			todo lo que nosotros les recomendaríamos: dónde hospedarte, dónde peinarte, quién te maquilla
+			y los pendientes prácticos del fin de semana.
 		</p>
 	</header>
 
 	<Marquee text="Cd. Victoria, Tamaulipas — 15 de noviembre de 2026 —" />
 
 	<main>
-		<!-- Hair -->
-		<section id="peinado" class="guide-section guide-section--ivory">
+		<!-- Hotels -->
+		<section id="hoteles" class="guide-section guide-section--ivory">
 			<div class="guide-section-inner">
 				<div class="guide-section-intro">
-					<p class="eyebrow guide-section-eyebrow" data-reveal>Antes de la boda</p>
-					<h2 class="guide-section-title" data-reveal>Peinado</h2>
+					<p class="eyebrow guide-section-eyebrow" data-reveal>Para quienes vienen de fuera</p>
+					<h2 class="guide-section-title" data-reveal>Dónde hospedarte</h2>
+					<p class="guide-section-lede" data-reveal>
+						Estas son las opciones que más nos gustan cerca de la recepción — a solo 5 minutos de
+						Salón Andare.
+					</p>
+					<figure class="guide-photo" data-reveal>
+						<Image
+							src={photoStairs}
+							alt="Alan y Jimena sentados en una escalera de madera"
+							widths={[480, 768, 1080, 1600]}
+							sizes="(min-width: 900px) 34vw, 92vw"
+							quality={80}
+							loading="lazy"
+						/>
+					</figure>
+				</div>
+				<div class="guide-list">
+					{HOTELS.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+				</div>
+			</div>
+		</section>
+
+		<!-- Hair & makeup -->
+		<section id="belleza" class="guide-section guide-section--olive">
+			<div class="guide-section-inner">
+				<div class="guide-section-intro">
+					<p class="eyebrow" data-reveal>Antes de la boda</p>
+					<h2 class="guide-section-title" data-reveal>Peinado y maquillaje</h2>
 					<figure class="guide-photo" data-reveal>
 						<Image
 							src={photoHug}
@@ -110,20 +162,7 @@ const MISC = [
 					</figure>
 				</div>
 				<div class="guide-list">
-					{HAIR.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
-				</div>
-			</div>
-		</section>
-
-		<!-- Makeup -->
-		<section id="maquillaje" class="guide-section guide-section--olive">
-			<div class="guide-section-inner">
-				<div class="guide-section-intro">
-					<p class="eyebrow" data-reveal>Antes de la boda</p>
-					<h2 class="guide-section-title" data-reveal>Maquillaje</h2>
-				</div>
-				<div class="guide-list">
-					{MAKEUP.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+					{BEAUTY.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
 				</div>
 			</div>
 		</section>
@@ -250,6 +289,11 @@ const MISC = [
 		font-size: clamp(2.4rem, 6vw, 4.8rem);
 		line-height: 1;
 		letter-spacing: -0.01em;
+	}
+
+	.guide-section-lede {
+		max-width: var(--measure);
+		opacity: 0.85;
 	}
 
 	.guide-photo {

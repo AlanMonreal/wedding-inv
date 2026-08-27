@@ -1,27 +1,25 @@
 ---
 /**
  * A recommended vendor or tip for traveling guests (stylist, makeup artist,
- * transport, etc.): name, why it's recommended, detail lines, and an
- * optional contact link. Rendered as a numbered guide entry.
+ * transport, etc.): name, why it's recommended, detail lines, and any
+ * contact links (map, WhatsApp, Instagram…). Rendered as a numbered guide
+ * entry.
  *
  * @prop {number} index - Position within its section (1-based).
  * @prop {string} name - Vendor or tip name.
  * @prop {string} note - One-line reason it's recommended.
  * @prop {string[]} details - Detail lines (address, phone, schedule…).
- * @prop {string} [linkLabel] - Text for the contact link, if any.
- * @prop {string} [linkUrl] - Contact link destination, if any (opens in a new tab when external).
+ * @prop {Array<{label: string, url: string}>} [links] - Contact links, if any (each opens in a new tab when external).
  */
 interface Props {
 	index: number;
 	name: string;
 	note: string;
 	details: string[];
-	linkLabel?: string;
-	linkUrl?: string;
+	links?: { label: string; url: string }[];
 }
 
-const { index, name, note, details, linkLabel, linkUrl } = Astro.props;
-const isExternal = linkUrl?.startsWith('http') ?? false;
+const { index, name, note, details, links = [] } = Astro.props;
 ---
 
 <article class="rec" data-reveal>
@@ -31,15 +29,22 @@ const isExternal = linkUrl?.startsWith('http') ?? false;
 		<p class="rec-note">{note}</p>
 		{details.map((line) => <p class="rec-detail">{line}</p>)}
 		{
-			linkUrl && linkLabel && (
-				<a
-					class="rec-link"
-					href={linkUrl}
-					target={isExternal ? '_blank' : undefined}
-					rel={isExternal ? 'noopener noreferrer' : undefined}
-				>
-					{linkLabel}
-				</a>
+			links.length > 0 && (
+				<div class="rec-links">
+					{links.map(({ label, url }) => {
+						const isExternal = url.startsWith('http');
+						return (
+							<a
+								class="rec-link"
+								href={url}
+								target={isExternal ? '_blank' : undefined}
+								rel={isExternal ? 'noopener noreferrer' : undefined}
+							>
+								{label}
+							</a>
+						);
+					})}
+				</div>
 			)
 		}
 	</div>
@@ -86,6 +91,13 @@ const isExternal = linkUrl?.startsWith('http') ?? false;
 		opacity: 0.7;
 	}
 
+	.rec-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+		margin-top: 0.6rem;
+	}
+
 	.rec-link {
 		font-size: 0.72rem;
 		font-weight: 600;
@@ -95,7 +107,6 @@ const isExternal = linkUrl?.startsWith('http') ?? false;
 		text-decoration: none;
 		border-bottom: 1px solid currentColor;
 		padding-bottom: 0.35em;
-		margin-top: 0.6rem;
 	}
 
 	.rec-link:hover {

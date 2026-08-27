@@ -20,13 +20,13 @@ fs.readdirSync(inputDir).forEach(file => {
     const name = path.parse(file).name;
     const inputPath = path.join(inputDir, file);
 
-    // 1. Exportar a WebP (ancho máx 2048px, calidad 80%)
+    // 1. Export to WebP (max width 2048px, quality 80%)
     sharp(inputPath)
       .resize({ width: 2048, withoutEnlargement: true })
       .webp({ quality: 85 })
       .toFile(path.join(outputDir, `${name}.webp`));
 
-    // 2. Exportar a AVIF (ancho máx 2048px, calidad 75%)
+    // 2. Export to AVIF (max width 2048px, quality 75%)
     sharp(inputPath)
       .resize({ width: 2048, withoutEnlargement: true })
       .avif({ quality: 80 })
