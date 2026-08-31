@@ -46,6 +46,11 @@ const isExternal = mapUrl.startsWith('http');
 
 <style>
 	.venue {
+		/* Without this, this card's own content (see .venue-head) sets an
+		   automatic minimum width that the auto-fit grid in .program-cards
+		   can never shrink below, blowing the whole page out horizontally
+		   on narrow viewports. */
+		min-width: 0;
 		border-top: 1px solid rgb(32 20 16 / 0.35);
 		padding-top: 1.5rem;
 		display: flex;
@@ -62,7 +67,8 @@ const isExternal = mapUrl.startsWith('http');
 		display: flex;
 		align-items: baseline;
 		justify-content: space-between;
-		gap: 1rem;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
 	}
 
 	.venue-moment {

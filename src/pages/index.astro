@@ -16,6 +16,7 @@ import Countdown from '../components/Countdown.astro';
 import Marquee from '../components/Marquee.astro';
 import VenueCard from '../components/VenueCard.astro';
 import RecommendationCard from '../components/RecommendationCard.astro';
+import ColorSwatch from '../components/ColorSwatch.astro';
 
 import photoLaugh from '../assets/images/Jimena & Alan-50-top.jpg';
 import photoProfile from '../assets/images/Jimena & Alan-49-top.jpg';
@@ -24,6 +25,14 @@ import photoChair from '../assets/images/Jimena & Alan-115-top.jpg';
 
 import photoCouch from '../assets/images/Jimena & Alan-63-top.jpg';
 import photoClose from '../assets/images/Jimena & Alan-126-top.jpg';
+
+import swatchBurntOrange from '../assets/images/colors/burnt-orange-ambar.jpeg';
+import swatchMossGreen from '../assets/images/colors/moss-green.jpeg';
+import swatchWine from '../assets/images/colors/wine-deep-garnet.jpeg';
+import swatchTurquoise from '../assets/images/colors/turquoise-vibrant-teal.jpeg';
+import swatchChocolate from '../assets/images/colors/chocolate-brown.jpeg';
+import swatchBrightPurple from '../assets/images/colors/bright-purple-electric-violet.jpeg';
+import swatchPinkMagenta from '../assets/images/colors/pink-magenta.jpeg';
 
 const WEDDING = {
 	coupleNames: 'Jimena & Alan',
@@ -50,6 +59,17 @@ const PROGRAM = [
 			{ moment: 'Recepción', time: '7:30 p. m.' },
 		],
 	},
+];
+
+/** The suggested guest color palette — seven jewel tones that photograph well against the reception's décor. */
+const PALETTE = [
+	{ name: 'Verde musgo', altName: 'Oliva claro', photo: swatchMossGreen },
+	{ name: 'Naranja quemado', altName: 'Ámbar', photo: swatchBurntOrange },
+	{ name: 'Púrpura brillante', altName: 'Violeta eléctrico', photo: swatchBrightPurple },
+	{ name: 'Turquesa', altName: 'Teal vibrante', photo: swatchTurquoise },
+	{ name: 'Vino', altName: 'Granate profundo', photo: swatchWine },
+	{ name: 'Marrón chocolate', altName: 'Café oscuro', photo: swatchChocolate },
+	{ name: 'Rosa magenta', altName: 'Magenta fucsia', photo: swatchPinkMagenta },
 ];
 
 /** The two ways to give a gift: cash in an envelope at the reception, or bank transfer. */
@@ -136,10 +156,6 @@ const GIFT_OPTIONS = [
 				<p class="program-notice" data-reveal>
 					Es una boda solo para adultos — con mucho cariño, les pedimos no traer niños.
 				</p>
-				<p class="program-dresscode" data-reveal>
-					Código de vestimenta: <em>formal</em>. El rojo es nuestro — todos los demás colores son
-					suyos.
-				</p>
 				<a class="program-guide-link" href="/recomendaciones" data-reveal>
 					¿Vienes de fuera? Lee la guía del invitado →
 				</a>
@@ -154,6 +170,20 @@ const GIFT_OPTIONS = [
 					loading="lazy"
 				/>
 			</figure>
+		</section>
+
+		<!-- Dress code -->
+		<section id="vestimenta" class="dresscode">
+			<div class="dresscode-inner">
+				<p class="eyebrow dresscode-eyebrow" data-reveal>Cómo vestir</p>
+				<h2 class="section-title" data-reveal>Código de vestimenta</h2>
+				<p class="dresscode-lede" data-reveal>
+					<em>Formal.</em> Estos son los tonos que más nos gustan para esa noche.
+				</p>
+				<div class="dresscode-palette" data-reveal>
+					{PALETTE.map((color) => <ColorSwatch {...color} />)}
+				</div>
+			</div>
 		</section>
 
 		<!-- Gift -->
@@ -322,6 +352,10 @@ const GIFT_OPTIONS = [
 		margin-inline: auto;
 		padding: 0 var(--gutter) clamp(4rem, 10vh, 7rem);
 		display: grid;
+		/* An implicit "auto" column can size to a descendant's max-content
+		   (e.g. the auto-fit grids below) instead of the available space;
+		   minmax(0, 1fr) keeps this column clamped to the viewport. */
+		grid-template-columns: minmax(0, 1fr);
 		gap: clamp(2rem, 5vh, 3.5rem);
 	}
 
@@ -350,13 +384,6 @@ const GIFT_OPTIONS = [
 		max-width: var(--measure);
 	}
 
-	.program-dresscode {
-		font-family: var(--font-display);
-		font-style: italic;
-		font-size: clamp(1.1rem, 2vw, 1.4rem);
-		max-width: var(--measure);
-	}
-
 	.program-guide-link {
 		justify-self: start;
 		font-size: 0.78rem;
@@ -381,6 +408,57 @@ const GIFT_OPTIONS = [
 	}
 
 	/* object-position: 50% 25%; */
+
+	/* ---- Dress code ---- */
+	.dresscode {
+		background: var(--wine);
+		color: var(--ivory);
+		padding: clamp(4rem, 12vh, 8rem) var(--gutter);
+	}
+
+	.dresscode-inner {
+		max-width: 72rem;
+		margin-inline: auto;
+		display: grid;
+		gap: clamp(2rem, 5vh, 3rem);
+	}
+
+	.dresscode-eyebrow {
+		color: var(--ivory-dim);
+	}
+
+	.dresscode-lede {
+		font-size: clamp(1.1rem, 2vw, 1.35rem);
+		max-width: var(--measure);
+	}
+
+	.dresscode-lede em {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 480;
+		font-size: 1.2em;
+		color: var(--crimson-bright);
+	}
+
+	/* A single row of paint-chip swatches with every other tile lifted —
+	   the same asymmetric-offset idea as .interlude-figure--offset above,
+	   reused here so the two editorial moments feel like one family. */
+	.dresscode-palette {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem);
+		padding-top: 0.5rem;
+	}
+
+	@media (min-width: 1200px) {
+		.dresscode-palette {
+			flex-wrap: nowrap;
+			justify-content: space-between;
+			gap: 1.5rem;
+			padding-top: 3rem;
+		}
+	}
 
 	/* ---- Gift ---- */
 	.gift {
