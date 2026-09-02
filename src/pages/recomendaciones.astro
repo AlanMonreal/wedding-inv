@@ -1,10 +1,10 @@
 ---
 /**
  * Guest guide for out-of-town guests traveling to Cd. Victoria, Tamaulipas:
- * hotel recommendations, hair/makeup recommendations, and practical tips
- * for the weekend. Hotels and beauty recommendations are real; the
- * practical-tips section still carries placeholder copy — swap it for the
- * real recommendations.
+ * hotel picks, hair/makeup, dining, and practical tips for the weekend.
+ * Beauty is split into a featured trio on the page plus a secondary trio
+ * revealed inside a native <dialog>, so the on-page grid reads as an
+ * editor's shortlist without hiding the full list.
  */
 import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
@@ -12,6 +12,7 @@ import Marquee from '../components/Marquee.astro';
 import RecommendationCard from '../components/RecommendationCard.astro';
 import photoStairs from '../assets/images/Jimena & Alan-29-edit.jpeg';
 import photoHug from '../assets/images/Jimena & Alan-92-top.jpg';
+import photoFood from '../assets/images/Jimena & Alan-122-must.jpg';
 import photoDetail from '../assets/images/Jimena & Alan-173-top.jpg';
 
 /** Recommended hotels, both a 5-minute drive from the reception at Salón Andare. */
@@ -30,8 +31,45 @@ const HOTELS = [
 	},
 ];
 
-/** Hair, makeup, and beauty recommendations — one merged list since each vendor only covers part of the service. */
-const BEAUTY = [
+/**
+ * Featured hair/makeup picks shown directly on the page — a curated trio
+ * covering the near-venue makeup pro, a personalized makeup artist, and
+ * the all-in-one beauty lab.
+ */
+const BEAUTY_FEATURED = [
+	{
+		name: 'Maquillarte by Cinthia Sánchez',
+		note: 'Maquillaje profesional a un paso de la recepción.',
+		details: ['Cd. Victoria, Tamaulipas', 'Citas solo por WhatsApp.'],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/PJYnhTGMzPmfoLHk9' },
+			{ label: 'WhatsApp', url: 'https://wa.me/message/FSXIHDRVPDWTF1' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/maquillartee' },
+		],
+	},
+	{
+		name: 'Makeup by Isabela Mansur',
+		note: 'Maquillaje profesional y personalizado.',
+		details: ['Cd. Victoria, Tamaulipas', 'Citas solo por WhatsApp.'],
+		links: [
+			{ label: 'WhatsApp', url: 'https://wa.me/message/V33TECYSGHCON1' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/makeupby_isabelamansur' },
+		],
+	},
+	{
+		name: 'Mas Bonita Beauty Lab',
+		note: 'Cabello, pestañas, uñas y maquillaje — todo en un solo lugar.',
+		details: ['Cd. Victoria, Tamaulipas', 'Agenda tu cita en línea.'],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/UMx8eFEopjaiWtYH6' },
+			{ label: 'Agendar cita', url: 'https://view.genially.com/688b82060546b21eaee2d058' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/mas.bonitamx/' },
+		],
+	},
+];
+
+/** Additional beauty options revealed inside the on-page dialog. */
+const BEAUTY_MORE = [
 	{
 		name: 'Shey Salón',
 		note: 'Cabello y uñas, para llegar impecable a la fiesta.',
@@ -53,28 +91,67 @@ const BEAUTY = [
 		],
 	},
 	{
-		name: 'Maquillarte by Cinthia Sánchez',
-		note: 'Maquillaje profesional a un paso de la recepción.',
+		name: 'Karla G Makeup',
+		note: 'Maquillaje y peinado profesional.',
 		details: ['Cd. Victoria, Tamaulipas', 'Citas solo por WhatsApp.'],
 		links: [
-			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/PJYnhTGMzPmfoLHk9' },
-			{ label: 'WhatsApp', url: 'https://wa.me/message/FSXIHDRVPDWTF1' },
-			{ label: 'Instagram', url: 'https://www.instagram.com/maquillartee' },
-		],
-	},
-	{
-		name: 'Mas Bonita Beauty Lab',
-		note: 'Cabello, pestañas, uñas y maquillaje — todo en un solo lugar.',
-		details: ['Cd. Victoria, Tamaulipas', 'Agenda tu cita en línea.'],
-		links: [
-			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/UMx8eFEopjaiWtYH6' },
-			{ label: 'Agendar cita', url: 'https://view.genially.com/688b82060546b21eaee2d058' },
-			{ label: 'Instagram', url: 'https://www.instagram.com/mas.bonitamx/' },
+			{
+				label: 'WhatsApp',
+				url: 'https://api.whatsapp.com/send?phone=5218345346458&text=%C2%A1Hola!%0AMe%20gustar%C3%ADa%20informaci%C3%B3n%20de%3A%20%0ALa%20fecha%20en%20la%20que%20requiero%20cita%20es%3A%20',
+			},
+			{ label: 'Instagram', url: 'https://www.instagram.com/_karlagmakeup' },
 		],
 	},
 ];
 
-/** Practical tips for the weekend — adjust freely. */
+/**
+ * Curated dining map — one pick per moment (café de especialidad, cocina
+ * vegetariana, brunch, flautas de harina, gorditas). Kept short on purpose
+ * so it reads as an editor's shortlist rather than a directory.
+ */
+const RESTAURANTS = [
+	{
+		name: 'Punto Nómada',
+		note: 'Café de especialidad para arrancar la mañana.',
+		details: [],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/ndCPk8g2qy7cHuPo9' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/puntonomadacafe/' },
+		],
+	},
+	{
+		name: '108 Café',
+		note: 'Cocina vegetariana, ligera y cuidada.',
+		details: [],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/RhPAaCL77LFetwTy8' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/108cafemx/' },
+		],
+	},
+	{
+		name: 'PIKIN',
+		note: 'Brunch de esos que se disfrutan sin prisa.',
+		details: [],
+		links: [
+			{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/VJhyaRDyJrCuADUn6' },
+			{ label: 'Instagram', url: 'https://www.instagram.com/pikin.restaurante' },
+		],
+	},
+	{
+		name: 'Flautas del Arce',
+		note: 'En Victoria las flautas son de harina — hay que probarlas.',
+		details: ['Varias sucursales en la ciudad.'],
+		links: [{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/8CfiRyaQ8PoxLGW57' }],
+	},
+	{
+		name: 'Gorditas el Tigre',
+		note: 'Gorditas y flautas — famosos por su sazón picante.',
+		details: [],
+		links: [{ label: 'Ver en el mapa', url: 'https://maps.app.goo.gl/mk1mzN2HriuS4Knj8' }],
+	},
+];
+
+/** Practical tips for the weekend. */
 const MISC = [
 	{
 		name: 'Cómo moverte',
@@ -88,20 +165,18 @@ const MISC = [
 	},
 	{
 		name: 'Farmacia y urgencias',
-		note: 'Por si el viaje se pone creativo.',
-		details: ['Farmacia Ejemplo 24 h — Av. Muestra 121', 'Tel. 834 000 0004'],
-	},
-	{
-		name: 'El desayuno del día siguiente',
-		note: 'Nuestro lugar favorito para curar la fiesta.',
-		details: ['Café Placeholder — Calle Inventada 314', 'Abre desde las 8:00 a. m.'],
+		note: 'El único capítulo que esperamos no tengan que usar.',
+		details: [
+			'Victoria tiene farmacias 24 h en casi cada esquina.',
+			'Un DiDi te acerca a la más cercana en minutos.',
+		],
 	},
 ];
 ---
 
 <Layout
 	title="Guía del invitado — Jimena & Alan"
-	description="Recomendaciones de estilistas, maquillaje y tips para quienes viajan a la boda de Jimena y Alan en Cd. Victoria, Tamaulipas."
+	description="Recomendaciones de hospedaje, estilistas, maquillaje, cocina local y tips para quienes viajan a la boda de Jimena y Alan en Cd. Victoria, Tamaulipas."
 >
 	<header class="guide-hero">
 		<a class="guide-back" href="/">← Volver a la invitación</a>
@@ -109,30 +184,32 @@ const MISC = [
 		<h1 class="guide-title" data-reveal>Para los que viajan</h1>
 		<p class="guide-lede" data-reveal>
 			Sabemos que muchos de ustedes vienen desde lejos hasta Cd. Victoria, Tamaulipas. Aquí está
-			todo lo que nosotros les recomendaríamos: dónde hospedarte, dónde peinarte, quién te maquilla
-			y los pendientes prácticos del fin de semana.
+			todo lo que nosotros les recomendaríamos: dónde hospedarte, dónde peinarte, quién te maquilla,
+			dónde comer y los pendientes prácticos del fin de semana.
 		</p>
 	</header>
 
 	<Marquee text="Cd. Victoria, Tamaulipas — 15 de noviembre de 2026 —" />
 
 	<main>
-		<!-- Hotels -->
-		<section id="hoteles" class="guide-section guide-section--ivory">
+		<!-- Hotels — wide layout so the short pair reads as a curated spread, not a sparse column -->
+		<section id="hoteles" class="guide-section guide-section--ivory guide-section--wide">
 			<div class="guide-section-inner">
 				<div class="guide-section-intro">
-					<p class="eyebrow guide-section-eyebrow" data-reveal>Para quienes vienen de fuera</p>
-					<h2 class="guide-section-title" data-reveal>Dónde hospedarte</h2>
-					<p class="guide-section-lede" data-reveal>
-						Estas son las opciones que más nos gustan cerca de la recepción — a solo 5 minutos de
-						Salón Andare.
-					</p>
+					<div class="guide-section-intro-text">
+						<p class="eyebrow guide-section-eyebrow" data-reveal>Para quienes vienen de fuera</p>
+						<h2 class="guide-section-title" data-reveal>Dónde hospedarte</h2>
+						<p class="guide-section-lede" data-reveal>
+							Estas son las opciones que más nos gustan cerca de la recepción — a solo 5 minutos
+							de Salón Andare.
+						</p>
+					</div>
 					<figure class="guide-photo" data-reveal>
 						<Image
 							src={photoStairs}
 							alt="Alan y Jimena sentados en una escalera de madera"
 							widths={[480, 768, 1080, 1600]}
-							sizes="(min-width: 900px) 34vw, 92vw"
+							sizes="(min-width: 900px) 44vw, 92vw"
 							quality={80}
 							loading="lazy"
 						/>
@@ -162,16 +239,46 @@ const MISC = [
 					</figure>
 				</div>
 				<div class="guide-list">
-					{BEAUTY.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+					{BEAUTY_FEATURED.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+					<button class="beauty-more" type="button" data-beauty-open aria-haspopup="dialog" aria-controls="beauty-dialog" data-reveal>
+						Ver más opciones →
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Food -->
+		<section id="comida" class="guide-section guide-section--ivory">
+			<div class="guide-section-inner">
+				<div class="guide-section-intro">
+					<p class="eyebrow guide-section-eyebrow" data-reveal>Para probar la ciudad</p>
+					<h2 class="guide-section-title" data-reveal>Dónde comer</h2>
+					<p class="guide-section-lede" data-reveal>
+						Un mapa muy personal — del café de especialidad de la mañana a las gorditas del
+						mediodía.
+					</p>
+					<figure class="guide-photo" data-reveal>
+						<Image
+							src={photoFood}
+							alt="Retrato editorial de Alan y Jimena"
+							widths={[480, 768, 1080, 1600]}
+							sizes="(min-width: 900px) 34vw, 92vw"
+							quality={80}
+							loading="lazy"
+						/>
+					</figure>
+				</div>
+				<div class="guide-list">
+					{RESTAURANTS.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
 				</div>
 			</div>
 		</section>
 
 		<!-- Misc -->
-		<section id="miscelaneos" class="guide-section guide-section--ivory">
+		<section id="miscelaneos" class="guide-section guide-section--olive">
 			<div class="guide-section-inner">
 				<div class="guide-section-intro">
-					<p class="eyebrow guide-section-eyebrow" data-reveal>Durante el fin de semana</p>
+					<p class="eyebrow" data-reveal>Durante el fin de semana</p>
 					<h2 class="guide-section-title" data-reveal>Lo práctico</h2>
 					<figure class="guide-photo" data-reveal>
 						<Image
@@ -195,7 +302,47 @@ const MISC = [
 		<p class="guide-footer-monogram" aria-hidden="true">J&A</p>
 		<a class="guide-footer-link" href="/">Volver a la invitación</a>
 	</footer>
+
+	<!--
+		Beauty dialog lives at the top of the layout, outside the belleza
+		section, so its flow position doesn't influence scroll when the
+		browser promotes it into the top layer via showModal().
+	-->
+	<dialog class="beauty-dialog" id="beauty-dialog" aria-labelledby="beauty-dialog-title">
+		<form method="dialog" class="beauty-dialog-close-form">
+			<button class="beauty-dialog-close" type="submit" aria-label="Cerrar">×</button>
+		</form>
+		<p class="eyebrow beauty-dialog-eyebrow">Más opciones</p>
+		<h3 class="beauty-dialog-title" id="beauty-dialog-title">Peinado y maquillaje</h3>
+		<div class="beauty-dialog-list">
+			{BEAUTY_MORE.map((entry, i) => <RecommendationCard index={i + 1} {...entry} />)}
+		</div>
+	</dialog>
 </Layout>
+
+<script>
+	/**
+	 * Wires up the "Ver más opciones" trigger for the beauty dialog. Uses
+	 * the native <dialog> element — ESC closes it, the close button is a
+	 * plain <form method="dialog"> submit (so it works even before this
+	 * script runs), and clicking the backdrop dismisses the dialog.
+	 */
+	const dialog = document.getElementById('beauty-dialog') as HTMLDialogElement | null;
+	const openBtn = document.querySelector<HTMLButtonElement>('[data-beauty-open]');
+
+	openBtn?.addEventListener('click', () => dialog?.showModal());
+
+	dialog?.addEventListener('click', (event) => {
+		if (event.target !== dialog) return;
+		const rect = dialog.getBoundingClientRect();
+		const clickedOutside =
+			event.clientY < rect.top ||
+			event.clientY > rect.bottom ||
+			event.clientX < rect.left ||
+			event.clientX > rect.right;
+		if (clickedOutside) dialog.close();
+	});
+</script>
 
 <style>
 	/* ---- Hero ---- */
@@ -346,5 +493,152 @@ const MISC = [
 
 	.guide-footer-link:hover {
 		border-color: currentColor;
+	}
+
+	/* Text stack wrapper — used inside .guide-section-intro when the intro
+	   needs to sit side-by-side with the photo (see --wide below). Groups
+	   eyebrow + title + lede so they count as one grid item instead of
+	   three, which is what lets the pair align cleanly. */
+	.guide-section-intro-text {
+		display: grid;
+		gap: 1.25rem;
+		align-content: start;
+	}
+
+	/* ---- Wide layout (hotels) ----
+	   For sections with a short list (e.g. the two hotel picks), the intro
+	   becomes an editorial 5fr/6fr row — text stack centered against a
+	   cropped portrait photo — with the cards dropped into a two-column
+	   grid below. Photo is constrained via aspect-ratio + max-height so it
+	   anchors the spread instead of stretching to its natural (very tall)
+	   portrait dimensions. */
+	@media (min-width: 900px) {
+		.guide-section--wide .guide-section-inner {
+			grid-template-columns: minmax(0, 1fr);
+			gap: clamp(3.5rem, 7vw, 5.5rem);
+		}
+
+		.guide-section--wide .guide-section-intro {
+			grid-template-columns: 5fr 6fr;
+			column-gap: clamp(3rem, 6vw, 5rem);
+			row-gap: 1.5rem;
+			align-items: center;
+		}
+
+		.guide-section--wide .guide-section-intro-text {
+			max-width: 26rem;
+		}
+
+		.guide-section--wide .guide-photo {
+			margin-top: 0;
+			max-width: 32rem;
+			justify-self: end;
+		}
+
+		.guide-section--wide .guide-photo img {
+			aspect-ratio: 4 / 5;
+			object-fit: cover;
+			object-position: center 30%;
+			width: 100%;
+			max-height: 36rem;
+		}
+
+		.guide-section--wide .guide-list {
+			grid-template-columns: 1fr 1fr;
+			gap: clamp(2rem, 4vw, 3.5rem);
+			align-items: start;
+		}
+	}
+
+	/* ---- Beauty dialog trigger ----
+	   Lives as the last item of the belleza .guide-list so it aligns with
+	   the featured cards; styled as a text link to match the site's
+	   editorial rec-link language. */
+	.beauty-more {
+		justify-self: start;
+		margin-top: 0.5rem;
+		font-family: var(--font-body);
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		background: none;
+		border: none;
+		color: inherit;
+		cursor: pointer;
+		border-bottom: 1px solid currentColor;
+		padding: 0 0 0.35em 0;
+		transition: opacity 0.2s ease;
+	}
+
+	.beauty-more:hover {
+		opacity: 0.65;
+	}
+
+	/* ---- Beauty dialog ----
+	   The UA `dialog:modal` stylesheet only pins the block axis (top/bottom),
+	   so a modal with a max-width sits at the inline-start (top-left) unless
+	   we anchor the inline axis too. Explicit `position: fixed; inset: 0;
+	   margin: auto;` recreates a centered top-layer overlay without falling
+	   back to `position: relative` (which caused the scroll-to-flow-position
+	   bug earlier). */
+	.beauty-dialog {
+		position: fixed;
+		inset: 0;
+		margin: auto;
+		background: var(--ivory);
+		color: var(--ink);
+		border: none;
+		padding: clamp(2.5rem, 6vw, 4.5rem);
+		max-width: min(46rem, 92vw);
+		width: 100%;
+		max-height: 88svh;
+		overflow-y: auto;
+	}
+
+	.beauty-dialog::backdrop {
+		background: rgb(51 5 10 / 0.72);
+		backdrop-filter: blur(6px);
+	}
+
+	.beauty-dialog-close-form {
+		position: absolute;
+		top: 0.75rem;
+		right: 0.75rem;
+		margin: 0;
+	}
+
+	.beauty-dialog-close {
+		background: none;
+		border: none;
+		font-family: var(--font-display);
+		font-size: 2rem;
+		line-height: 1;
+		cursor: pointer;
+		color: currentColor;
+		padding: 0.5rem 0.75rem;
+		transition: opacity 0.2s ease;
+	}
+
+	.beauty-dialog-close:hover {
+		opacity: 0.55;
+	}
+
+	.beauty-dialog-eyebrow {
+		color: var(--crimson-deep);
+	}
+
+	.beauty-dialog-title {
+		font-family: var(--font-display);
+		font-weight: 460;
+		font-size: clamp(1.8rem, 4vw, 2.6rem);
+		line-height: 1;
+		margin-top: 0.75rem;
+		margin-bottom: clamp(2rem, 4vh, 2.75rem);
+	}
+
+	.beauty-dialog-list {
+		display: grid;
+		gap: clamp(1.75rem, 4vh, 2.5rem);
 	}
 </style>

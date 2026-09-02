@@ -1,3 +1,18 @@
+## Design Standard
+
+Every design decision on this project targets awwwards-honorable quality. This is not a template — the site should feel editorial, considered, and confident. Apply this to any UI change, without needing to be reminded:
+
+- **Composition first.** Think magazine spread, not admin panel. Intentional negative space, deliberate asymmetry when it earns it, cohesive rhythm across sections.
+- **Verify visually before claiming done.** Any layout change gets loaded in the browser at both a phone width (~375px) and a desktop width (≥1280px). If the composition feels stranded, sparse, floating, or accidentally decorative, iterate before reporting — don't ship "technically correct but visually off."
+- **Short content still deserves presence.** A section with only two entries should feel curated, not empty. Redesign the layout, don't just center smaller cards in dead space.
+- **Bold typography over safe typography.** Display type is a design element — lean into scale and weight. Body copy stays restrained. Never both timid.
+- **Photos are anchors, not stranded elements.** Integrate them with adjacent typography (aligned baselines, deliberate crops via `aspect-ratio` + `object-fit`, considered proportions). A tall portrait dropped into a text column at natural aspect is almost always wrong.
+- **Motion is design.** Reveal transitions, hover states, and dialog behavior should feel considered — not the browser default and not stock ease-in-out.
+- **Avoid template patterns.** Symmetric grids of identical cards, tiny centered lists, generic underline-on-hover, evenly-spaced everything. Prefer variation with intent.
+- **When a layout uses CSS grid,** be explicit about spans and rows. `grid-row: 1 / -1` requires explicit `grid-template-rows` — otherwise `-1` collapses and the span silently doesn't happen.
+
+If the user has to point out that a design "looks off" or ask whether it's awwwards-worthy, that's a signal the standard wasn't applied — treat it as a real bug, not a taste disagreement.
+
 ## Development
 
 When starting the dev server, use background mode:
