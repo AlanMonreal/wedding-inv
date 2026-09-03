@@ -11,8 +11,6 @@
  */
 import { Image } from 'astro:assets';
 import heroPhoto from '../assets/images/Jimena & Alan-112-top.jpg';
-// import heroPhoto from '../assets/images/Jimena & Alan-122-must.jpg';
-// import heroPhoto from '../assets/images/Jimena & Alan-28-edit.jpeg';
 
 interface Props {
 	coupleNames: string;
@@ -73,9 +71,6 @@ const [firstName, secondName] = coupleNames.split(' & ');
 		object-position: 50% 75%;
 		z-index: -2;
 	}
-	/* object-position: 50% 78%; */
-	/* object-position: 50% 35%; */
-	/* object-position: 50% 25%; */
 
 	/* Dissolves the photo's vignette into the page ground below */
 	.hero-overlay {
